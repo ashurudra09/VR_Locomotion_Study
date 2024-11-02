@@ -1,0 +1,338 @@
+# Structure of the Survey:
+# 1) Consent Form
+# 2) Demographic Questionnaire
+# 3) Prompt to start the experiment according to condition given
+# 4) Presence Questionnaire
+# 5) VRISE questionnaire
+
+page: begin
+# Demographic Questionnaire questions:
+
+l: d_age
+t: textline
+q: Age
+- {min=16,max=60, require} Please enter your age: 
+
+l: d_gender
+t: radio
+q: What is your gender?
+- Woman
+- Man
+- Non-Binary
+- Prefer not to say
+- {other, size=30} Would like to describe
+
+page: end
+
+l: d_vr_experience
+t: radio
+q: What is your experience with Virtual Reality?
+- I have never used a VR device before.
+- I have used a VR device a few times in the past.
+- I seldom use VR devices.
+- I often use VR devices.
+- I use VR devices almost every day.
+
+
+l: d_vis_impairment
+t: check
+q: DHave you been diagnosed with or have a history of any of the following conditions? Please choose all that apply.
+- Epilepsy
+- Astigmatism
+- Myopia (Near-Sightedness)
+- Hypermetropia (Far-Sightedness)
+- Color-blindness
+- {other, size=30} Other (please specify)
+
+
+l: decide_what_people_get
+t: jump
+- if $psy_group = 1 then goto walking_condition
+- if $psy_group = 2 then goto joystick_condition
+
+
+l: walking_condition
+t: info
+q: Please familiarize yourself with the VR headset. You will be <b>Physically Walking</b> to complete the given task.  <b>Press <i>Continue</i> only when you are done with the experiment.</b>
+
+page: begin
+# Walking Performance:
+
+l: walking_time
+t: textline
+q: Time taken to complete the task (in seconds):
+- {number, require}
+
+l: walking_score
+t: textline
+q: number of objects correctly placed:
+- {min=0,max=4, require} 
+
+page: end
+
+j: walking_feedback
+
+l: joystick_condition
+t: info
+q: Please familiarize yourself with the VR headset. You will be using a <b>Joystick</b> to complete the given task. <b>Press <i>Continue</i> only when you are done with the experiment.</b>
+
+page: begin
+# Joystick Performance:
+
+l: joystick_time
+t: textline
+q: Time taken to complete the task (in seconds):
+- {number, require}
+
+l: joystick_score
+t: textline
+q: number of objects correctly placed:
+- {min=0,max=4, require} 
+
+page: end
+# ---------------------------------------------------------------------------------------------------------------------------------------
+
+page: begin
+# feedback for Joystick condition:
+
+l: joystick_feedback
+t: info
+q: <b>Please provide your feedback for the task:</b>
+
+l: j_clarity
+t: radio
+q: How clearly was the task explained to you?
+- The task was explained very poorly.
+- The task was explained slightly poorly.
+- The task was adequately explained.
+- The task was slightly well-explained.
+- The task was very well-explained.
+
+l: j_difficulty
+t: radio
+q: How difficult did you find the task?
+- The task was very difficult.
+- The task was slightly difficult.
+- Difficulty of the task was just right.
+- The task was slightly easy.
+- The task was very easy.
+
+l: j_navigation
+t: radio
+q: How easily were you able to navigate the Virtual Environment using a Joystick?
+- Navigation was very difficult/uncomfortable.
+- Navigation was slightly difficult/uncomfortable.
+- Navigation was slightly easy/comfortable.
+- Navigation was very easy/comfortable.
+
+l: j_recall_time
+t: radio
+q: Was the time given in the memory phase adequate?
+- No, too little time was given in the memory phase.
+- Yes, time given in the memory phase was adequate.
+- No, too much time was given in the memory phase.
+
+l: j_strategy
+t: textbox
+q: What was the strategy you used to remember the object placements?
+- Strategy used
+
+page: end
+
+j: p_begin
+
+page: begin
+# feedback for walking condition:
+
+l: walking_feedback
+t: info
+q: <b>Please provide your feedback for the task:</b>
+
+l: w_clarity
+t: radio
+q: How clearly was the task explained to you?
+- The task was explained very poorly.
+- The task was explained slightly poorly.
+- The task was adequately explained.
+- The task was slightly well-explained.
+- The task was very well-explained.
+
+l: w_difficulty
+t: radio
+q: How difficult did you find the task?
+- The task was very easy.
+- The task was slightly easy.
+- Difficulty of the task was just right.
+- The task was slightly difficult.
+- The task was very difficult.
+
+l: w_navigation
+t: radio
+q: How easily were you able to navigate the Virtual Environment by walking?
+- Navigation was very difficult/uncomfortable.
+- Navigation was slightly difficult/uncomfortable.
+- Navigation was slightly easy/comfortable.
+- Navigation was very easy/comfortable.
+
+l: w_memory_time
+t: radio
+q: Was the time given in the memory phase adequate?
+- No, too little time was given in the memory phase.
+- Yes, time given in the memory phase was adequate.
+- No, too much time was given in the memory phase.
+
+l: w_strategy
+t: textbox
+q: What was the strategy you used to remember the object placements?
+- Strategy used
+
+page: end
+
+# -------------------------------------------------------------------------------------------------------------------------------
+
+page: begin
+# Presence Questionnaire:
+
+l: p_begin
+t: info
+q: <b>Presence Questionnaire:</b> The following few questions will be themed around how immersive you felt the overall VR experience was. Read each question carefully before answering. There are no right answers!
+
+# List of Questions from Witmer Questionnaire:
+# p_q1 - Q2
+# p_q2 - Q3
+# p_q3 - Q5
+# p_q4 - Q7
+# p_q5 - Q9
+# p_q6 - Q11
+# p_q7 - Q13
+# p_q8 - Q15
+# p_q9 - Q16
+# p_q10 - Q18
+# p_q11 - Q19
+
+
+
+l: p_q1
+o: link
+t: range
+q: How responsive was the environment to the actions that you initiated (or performed)?
+1 - Not Responsive; 7 - Completely Responsive
+- {min=1,max=7} Immersion
+
+l: p_q2
+o: link
+t: range
+q: How natural did your interactions with the environment seem?
+1 - Extremely Artificial; 7 - Completely Natural
+- {min=1,max=7} Immersion
+
+l: p_q3
+o: link
+t: range
+q: How natural was the mechanism which controlled movement through the environment?
+1 - Extremely Artificial; 7 - Completely Natural
+- {min=1,max=7} Immersion
+
+l: p_q4
+o: link
+t: range
+q: How much did your experiences in the virtual environment seem consistent with your real world experiences?
+1 - Not Consistent; 7 - Very Consistent
+- {min=1,max=7} Immersion
+
+l: p_q5
+o: link
+t: range
+q: How completely were you able to actively survey or search the environment using vision?
+1 - Not at all; 7 - Completely
+- {min=1,max=7} Immersion
+
+l: p_q6
+o: link
+t: range
+q: How closely were you able to examine objects?
+1 - Not at all; 7 - Very Closely
+- {min=1,max=7} Immersion
+
+l: p_q7
+o: link
+t: range
+q: How involved were you in the virtual environment experience?
+1 - Not Involved; 7 - Completely Engrossed
+- {min=1,max=7} Immersion
+
+l: p_q8
+o: link
+t: range
+q: How quickly did you adjust to the virtual environment experience?
+1 - Not at all; 7 - In less than one minute
+- {min=1,max=7} Immersion
+
+l: p_q9
+o: link
+t: range
+q: How proficient in moving and interacting with the virtual environment did you feel at the end of the experience?
+1 - Not Proficient 7 - Very Proficient
+- {min=1,max=7} Immersion
+
+l: p_q10
+o: link
+t: range
+q: How much did the control devices interfere with the performance of assigned tasks or with other activities?
+1 - Interfered Greatly; 7 - Not at all
+- {min=1,max=7} Immersion
+
+l: p_q11
+o: link
+t: range
+q: How well could you concentrate on the assigned tasks or required activities rather than on the mechanisms used to perform those tasks or activities?
+1 - Not at all; 7 - Completely
+- {min=1,max=7} Immersion
+
+page: end
+
+# Calculations:
+
+l: presence_overall
+t: set
+- mean $p_q*
+
+# --------------------------------------------------------------------------------------------------------------------------------
+
+page: begin
+# VRISE Questionnaire
+
+l: v_begin
+t: info
+q: <b>VRISE Questionnaire:</b> The following few questions will be about the various symptoms of motion sickness you might have felt while performing the task. Respond with the option you feel is most appropriate.
+
+scale: severity
+- {score=0} None
+- {score=1} Slight
+- {score=2} Moderate
+- {score=3} Severe
+
+l: v_questions
+q: Severity of symptom:
+o: width 50%
+t: scale severity
+- General Discomfort
+- Fatigue
+- Headache
+- Eye Strain
+- Difficulty Focusing
+- Increased Salivation
+- Sweating
+- Nausea
+- Difficulty Concentrating
+- Fullness of head
+- Blurred Vision
+- Dizzy
+- Vertigo (a sensation of motion or spinning)
+- Stomach awareness
+- Burping
+
+page: end
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+

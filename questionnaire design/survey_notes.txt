@@ -1,0 +1,118 @@
+0) Consent Form
+1) Demographic questionnaire
+
+---EXPERIMENT - CONDITION A (JOYSTICK) OR CONDITION B (WALKING)---
+
+2) VRISE Questionnaire
+3) Presence Questionnaire
+
+
+Target: Entire questionnaire phase takes max 10 minutes
+
+
+1) Demographic Questionnaire:
+
+THINGS WE NEED TO GET:
+	- Age, Gender
+	- Experience with VR (In general + with Meta Quest)
+	- Handedness ??
+	- Height ?? (might be able to see cubes from above)
+
+2) Feedback for the task:
+
+THINGS WE NEED TO GET:
+	- Difficulty of task
+	- How clear were the instructions?
+	- Was the time given to the recall phase sufficient?
+	- Open-ended: Suggestions to improve the task
+	
+	
+page: begin
+# VRISE Questionnaire
+
+l: v_begin
+t: info
+q: <b>VRISE Questionnaire:</b> The following few questions will be about the various symptoms of motion sickness you might have felt while performing the task. Respond with the option you feel is most appropriate.
+
+scale: severity
+- {score=0} None
+- {score=1} Slight
+- {score=2} Moderate
+- {score=3} Severe
+
+l: v1
+t: scale severity
+q: General Discomfort
+- Severity of symptom:
+
+l: v2
+t: scale severity
+q: Fatigue
+- Severity of symptom:
+
+l: v3
+t: scale severity
+q: Headache
+- Severity of symptom:
+
+l: v4
+t: scale severity
+q: Eye Strain
+- Severity of symptom:
+
+l: v5
+t: scale severity
+q: Difficulty Focusing
+- Severity of symptom:
+
+l: v6
+t: scale severity
+q: Increased Salivation
+- Severity of symptom:
+
+l: v7
+t: scale severity
+q: Sweating
+- Severity of symptom:
+
+l: v8
+t: scale severity
+q: Nausea
+- Severity of symptom:
+
+l: v9
+t: scale severity
+q: Difficulty Concentrating
+- Severity of symptom:
+
+l: v10
+t: scale severity
+q: Fullness of Head
+- Severity of symptom:
+
+l: v11
+t: scale severity
+q: Blurred Vision
+- Severity of symptom:
+
+l: v12
+t: scale severity
+q: Dizzy
+- Severity of symptom:
+
+l: v13
+t: scale severity
+q: Vertigo
+- Severity of symptom:
+
+l: v14
+t: scale severity
+q: Stomach Awareness
+- Severity of symptom:
+
+l: v15
+t: scale severity
+q: Burping
+- Severity of symptom:
+
+page: end
