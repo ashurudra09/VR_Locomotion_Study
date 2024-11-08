@@ -56,17 +56,17 @@ def lists_stats(walking, joystick, thing):
 
     # Print the statistics and outliers
     print(f"Walking Statistics for {thing}:")
-    print(f"Mean: {mean1}")
+    print(f"Mean: {mean1:.3f}")
     print(f"Median: {median1}")
     print(f"Mode: {mode1}")
-    print(f"Standard Deviation: {std_dev1}")
+    print(f"Standard Deviation: {std_dev1:.3f}")
     print(f"Outliers: {outliers1}\n")
 
     print(f"Joystick Statistics for {thing}:")
-    print(f"Mean: {mean2}")
+    print(f"Mean: {mean2:.3f}")
     print(f"Median: {median2}")
     print(f"Mode: {mode2}")
-    print(f"Standard Deviation: {std_dev2}")
+    print(f"Standard Deviation: {std_dev2:.3f}")
     print(f"Outliers: {outliers2}\n")
 
 def lists_boxplot(walking, joystick, labels):
@@ -92,10 +92,16 @@ def lists_histogram(walking, joystick, bins):
     plt.show()
 
 def demographic_analysis():
-    print(df["gender"].value_counts())
-    print("Average age:", df["d_age_1"].mean())
-    print("Number of participants in each", df["condition"].value_counts())
-    print("Average time taken for completion of entire experiment:", df["TIME_total"].mean())
+    print(f"Gender of Participants:\t"
+          f"Women: {df['gender'].value_counts()['woman']},"
+          f" Men: {df['gender'].value_counts()['man']}")
+    print(f"Age of participants:"
+          f"\tMean: {df['d_age_1'].mean():.3f}, SD: {df['d_age_1'].std():.3f}")
+    print(f"Number of participants in each Condition:\n"
+          f"Walking: {df['condition'].value_counts()['walking']}\n"
+          f"Joystick: {df['condition'].value_counts()['joystick']}")
+    print(f"Time Taken for Completion of Entire Experiment:"
+          f"\n\tMean: {df['TIME_total'].mean():.3f}, SD: {df['TIME_total'].std():.3f}\n")
 
 def ssq_analysis():
     nausea = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1]
@@ -146,6 +152,31 @@ def task_performance():
     lists_histogram(walking_scores, joystick_scores,
                     [0, 1, 2, 3, 4, 5])
 
+def task_feedback_analysis():
+    ### It is in order Poorly to Clearly, 1 to 5.
+    w_clarity = df["w_clarity_1"][df["condition"] == 'walking'].tolist()
+    j_clarity = df["j_clarity_1"][df["condition"] == 'joystick'].tolist()
+    lists_stats(w_clarity, j_clarity, "Clarity of Instructions")
+
+    ### It is in order from difficult to easy, 1 to 5.
+    w_difficulty = df["w_difficulty_1"][df["condition"] == 'walking'].tolist()
+    j_difficulty = df["j_difficulty_1"][df["condition"] == 'joystick'].tolist()
+    lists_stats(w_difficulty, j_difficulty, "Difficulty of Task")
+
+    ### It is in order from difficult/uncomfortable to easy/confortable, 1 to 4.
+    w_navigation = df["w_navigation_1"][df["condition"] == 'walking'].tolist()
+    j_navigation = df["j_navigation_1"][df["condition"] == 'joystick'].tolist()
+    lists_stats(w_navigation, j_navigation, "Ease of Navigation")
+
+    ### Correlation between navigation and difficulty scores, for each condition:
+
+    ### Analysis of Strategies used:
+    w_strategy = df["w_strategy_1"][df["condition"] == 'walking'].tolist()
+    j_strategy = df["j_strategy_1"][df["condition"] == 'joystick'].tolist()
+    # print(w_strategy)
+    # print(j_strategy)
+
 preprocessing_data()
-presence_analysis()
-task_performance()
+demographic_analysis()
+task_feedback_analysis()
+# print(df["w_clarity_1"][df["condition"] == "walking"])
