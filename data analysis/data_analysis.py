@@ -181,5 +181,5 @@ def task_feedback_analysis():
     # print(j_strategy)
 
 preprocessing_data()
-ssq_analysis()
+task_feedback_analysis()
 # print(df["w_clarity_1"][df["condition"] == "walking"])
