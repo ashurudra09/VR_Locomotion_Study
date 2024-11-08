@@ -69,12 +69,12 @@ def lists_stats(walking, joystick, thing):
     print(f"Standard Deviation: {std_dev2:.3f}")
     print(f"Outliers: {outliers2}\n")
 
-def lists_boxplot(walking, joystick, labels):
+def lists_boxplot(walking, joystick, label):
     # Plot combined box plot
     plt.boxplot([walking, joystick], vert=True, labels=['Walking', 'Joystick'])
-    plt.title(f"Box Plots of {labels[0]} for the two {labels[1]}s")
-    plt.ylabel(labels[0])
-    plt.xlabel(labels[1])
+    plt.title(f"Box Plots of {label} for the two Conditions")
+    plt.ylabel(label)
+    plt.xlabel("Condition")
     plt.show()
 
 def lists_histogram(walking, joystick, bins):
@@ -103,32 +103,37 @@ def demographic_analysis():
     print(f"Time Taken for Completion of Entire Experiment:"
           f"\n\tMean: {df['TIME_total'].mean():.3f}, SD: {df['TIME_total'].std():.3f}\n")
 
-def ssq_analysis():
+def calc_ssq_scores(scores):
     nausea = [1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1]
     oculomotor = [1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0]
     disorientation = [0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 2, 1, 0, 0]
 
-    v_question_columns = [col for col in df.columns if col.startswith('v_questions')]
-    # Calculate the mean across 'v_questions' columns for each 'condition'
-    grouped_means = df.groupby('condition')[v_question_columns].mean()
-    # Convert each row of means to a list for each unique 'condition' value
-    result = {group: row.tolist() for group, row in grouped_means.iterrows()}
-    # print(result)
-
     # Final score multiplier
     final_multiplier = 3.74
-    # Calculate the final scores for each 'condition'
-    final_scores = {}
-    for group, scores in result.items():
+
+    total_scores = []
+    for score in scores:
         # Calculate weighted sums for each category
-        nausea_score = sum(s * w for s, w in zip(scores, nausea))
-        oculomotor_score = sum(s * w for s, w in zip(scores, oculomotor))
-        disorientation_score = sum(s * w for s, w in zip(scores, disorientation))
+        nausea_score = sum(s * w for s, w in zip(score, nausea))
+        oculomotor_score = sum(s * w for s, w in zip(score, oculomotor))
+        disorientation_score = sum(s * w for s, w in zip(score, disorientation))
         # Sum of all categories and apply final multiplier
         total_score = (nausea_score + oculomotor_score + disorientation_score) * final_multiplier
-        final_scores[group] = total_score
+        total_scores.append(total_score)
+    return total_scores
 
-    print("SSQ scores (out of 300 approx.): ", final_scores)
+def ssq_analysis():
+    v_question_columns = [col for col in df.columns if col.startswith('v_questions')]
+    # Calculate the mean across 'v_questions' columns for each 'condition'
+    ssq_walking, ssq_joystick = [], []
+    for col in v_question_columns:
+        ssq_walking.append(df[col][df['condition'] == 'walking'].tolist())
+    for col in v_question_columns:
+        ssq_joystick.append(df[col][df['condition'] == 'joystick'].tolist())
+    walking_scores = calc_ssq_scores(ssq_walking)
+    joystick_scores = calc_ssq_scores(ssq_joystick)
+    lists_stats(walking_scores, joystick_scores, "Simulator Sickness")
+    lists_boxplot(walking_scores, joystick_scores, "Simulator Sickness")
 
 def presence_analysis():
     joystick_scores = df["presence_overall_1"][df["condition"] == 'joystick'].tolist()
@@ -142,8 +147,7 @@ def task_performance():
     walking_times = df["walking_time_1"][df["condition"] == 'walking'].tolist()
     lists_stats(walking_times, joystick_times,
                 "Time for Task Completion")
-    lists_boxplot(walking_times, joystick_times,
-                  ["Time Taken (in s)", "Condition"])
+    lists_boxplot(walking_times, joystick_times,"Time Taken (in s)")
 
     joystick_scores = df["joystick_score_1"][df["condition"] == 'joystick'].tolist()
     walking_scores = df["walking_score_1"][df["condition"] == 'walking'].tolist()
@@ -177,6 +181,5 @@ def task_feedback_analysis():
     # print(j_strategy)
 
 preprocessing_data()
-demographic_analysis()
-task_feedback_analysis()
+ssq_analysis()
 # print(df["w_clarity_1"][df["condition"] == "walking"])
