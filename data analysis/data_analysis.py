@@ -1,5 +1,5 @@
 """
-Getting relevant information from excel sheet obtained from psytoolkit
+Getting relevant information from Excel sheet obtained from PsyToolkit
 """
 import pandas as pd
 import numpy as np
@@ -72,7 +72,7 @@ def lists_stats(walking, joystick, thing):
 def lists_boxplot(walking, joystick, label):
     # Plot combined box plot
     plt.boxplot([walking, joystick], vert=True, labels=['Walking', 'Joystick'])
-    plt.title(f"Box Plots of {label} for the two Conditions")
+    plt.title(f"Box Plots of {label} for each Condition")
     plt.ylabel(label)
     plt.xlabel("Condition")
     plt.show()
@@ -140,7 +140,7 @@ def presence_analysis():
     walking_scores = df["presence_overall_1"][df["condition"] == 'walking'].tolist()
     lists_stats(walking_scores, joystick_scores, "Presence")
     lists_boxplot(walking_scores, joystick_scores,
-                  ["Overall Presence", "Condition"])
+                  "Overall Presence")
 
 def task_performance():
     joystick_times = df["joystick_time_1"][df["condition"] == 'joystick'].tolist()
