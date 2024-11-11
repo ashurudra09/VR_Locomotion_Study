@@ -1,3 +1,4 @@
 data
-.idea
 .gitignore
+.ipynb_checkpoints
+.idea

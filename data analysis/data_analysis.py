@@ -4,6 +4,7 @@ Getting relevant information from Excel sheet obtained from PsyToolkit
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import pingouin as pg
 from scipy import stats
 
 df = pd.read_csv("PsyToolkitData_BRED_PROJECT_11_Nov/data.csv")
@@ -169,6 +170,42 @@ def task_feedback_analysis():
     # print(w_strategy)
     # print(j_strategy)
 
+def cba_reliability(construct):
+    constructs = {
+        "Presence": {
+            "joystick": df[['p_q1_1', 'p_q2_1', 'p_q3_1',
+                            'p_q4_1', 'p_q5_1', 'p_q6_1',
+                            'p_q7_1', 'p_q8_1', 'p_q9_1',
+                            'p_q10_1', 'p_q11_1']][df['condition'] == 'joystick'],
+            "walking": df[['p_q1_1', 'p_q2_1', 'p_q3_1',
+                           'p_q4_1', 'p_q5_1', 'p_q6_1',
+                           'p_q7_1', 'p_q8_1', 'p_q9_1',
+                           'p_q10_1', 'p_q11_1']][df['condition'] == 'walking']
+        },
+        "Simulator Sickness": {
+            "joystick": df[['v_questions_1', 'v_questions_2', 'v_questions_3',
+                            'v_questions_4', 'v_questions_5', 'v_questions_6',
+                            'v_questions_7', 'v_questions_8', 'v_questions_9',
+                            'v_questions_10', 'v_questions_11', 'v_questions_12',
+                            'v_questions_13', 'v_questions_14', 'v_questions_15'
+                            ]][df['condition'] == 'joystick'],
+            "walking": df[['v_questions_1', 'v_questions_2', 'v_questions_3',
+                           'v_questions_4', 'v_questions_5', 'v_questions_6',
+                           'v_questions_7', 'v_questions_8', 'v_questions_9',
+                           'v_questions_10', 'v_questions_11', 'v_questions_12',
+                           'v_questions_13', 'v_questions_14', 'v_questions_15'
+                           ]][df['condition'] == 'walking']  },
+    }
+    df_j = constructs[construct]["joystick"]
+    df_w = constructs[construct]["walking"]
+
+    print(f"Reliability Analysis for {construct}:")
+    print(f"\tCronbach Alpha for Joystick Condition: {pg.cronbach_alpha(df_j)[0]:.3f}\n"
+          f"\tCronbach Alpha for Walking Condition: {pg.cronbach_alpha(df_w)[0]:.3f}\n")
+
+def reliability_analysis():
+    cba_reliability("Simulator Sickness")
+    cba_reliability("Presence")
+
 preprocessing_data()
-demographic_analysis()
-# print(df["w_clarity_1"][df["condition"] == "walking"])
+reliability_analysis()
