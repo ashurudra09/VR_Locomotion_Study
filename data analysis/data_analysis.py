@@ -11,7 +11,7 @@ print(df.columns)
 
 df.loc[df["walking_time_1"].isna() & (df["psy_group"] == 1), "psy_group"] = 2
 df.loc[df["joystick_time_1"].isna() & (df["psy_group"] == 2), "psy_group"] = 1
-print(df["walking_time_1"][df["psy_group"] == 1])
+# print(df["walking_time_1"][df["psy_group"] == 1])
 
 def convert_group(a):
     if a == 1:
@@ -31,47 +31,30 @@ def preprocessing_data():
     df["condition"] = df["psy_group"].apply(convert_group)
     df["gender"] = df["d_gender_1"].apply(convert_gender)
 
-def lists_stats(walking, joystick, thing):
+def list_stats(l, thing, condition=""):
     # Calculate statistics for walking
-    mean1 = np.mean(walking)
-    median1 = np.median(walking)
-    mode1 = stats.mode(walking, keepdims=True)[0][0]
-    std_dev1 = np.std(walking)
+    mean = np.mean(l)
+    median = np.median(l)
+    mode = stats.mode(l, keepdims=True)[0][0]
+    std_dev = np.std(l)
 
     # Calculate outliers for walking using IQR
-    q1_1, q3_1 = np.percentile(walking, [25, 75])
-    iqr1 = q3_1 - q1_1
-    lower_bound1 = q1_1 - 1.5 * iqr1
-    upper_bound1 = q3_1 + 1.5 * iqr1
-    outliers1 = [v for v in walking if v < lower_bound1 or v > upper_bound1]
+    q1, q3 = np.percentile(l, [25, 75])
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+    outliers1 = [v for v in l if v < lower_bound or v > upper_bound]
 
-    # Calculate statistics for joystick
-    mean2 = np.mean(joystick)
-    median2 = np.median(joystick)
-    mode2 = stats.mode(joystick, keepdims=True)[0][0]
-    std_dev2 = np.std(joystick)
-
-    # Calculate outliers for joystick using IQR
-    q1_2, q3_2 = np.percentile(joystick, [25, 75])
-    iqr2 = q3_2 - q1_2
-    lower_bound2 = q1_2 - 1.5 * iqr2
-    upper_bound2 = q3_2 + 1.5 * iqr2
-    outliers2 = [v for v in joystick if v < lower_bound2 or v > upper_bound2]
-
-    # Print the statistics and outliers
-    print(f"Walking Statistics for {thing}:")
-    print(f"Mean: {mean1:.3f}")
-    print(f"Median: {median1}")
-    print(f"Mode: {mode1}")
-    print(f"Standard Deviation: {std_dev1:.3f}")
+    print(f"{condition}Statistics for {thing}:")
+    print(f"Mean: {mean:.3f}")
+    print(f"Median: {median}")
+    print(f"Mode: {mode}")
+    print(f"Standard Deviation: {std_dev:.3f}")
     print(f"Outliers: {outliers1}\n")
 
-    print(f"Joystick Statistics for {thing}:")
-    print(f"Mean: {mean2:.3f}")
-    print(f"Median: {median2}")
-    print(f"Mode: {mode2}")
-    print(f"Standard Deviation: {std_dev2:.3f}")
-    print(f"Outliers: {outliers2}\n")
+def lists_stats_wrapper(walking, joystick, thing):
+    list_stats(walking, thing, "Walking ")
+    list_stats(joystick, thing, "Joystick ")
 
 def lists_boxplot(walking, joystick, label):
     # Plot combined box plot
@@ -102,8 +85,10 @@ def demographic_analysis():
     print(f"Age of participants:"
           f"\tMean: {df['d_age_1'].mean():.3f}, SD: {df['d_age_1'].std():.3f}")
     print(f"Number of participants in each Condition:\n"
-          f"Walking: {df['condition'].value_counts()['walking']}\n"
-          f"Joystick: {df['condition'].value_counts()['joystick']}")
+          f"\tWalking: {df['condition'].value_counts()['walking']}\n"
+          f"\tJoystick: {df['condition'].value_counts()['joystick']}")
+    print(f"Prior Experience in VR among Participants:\n"
+          f"\tMean: {df['d_vr_experience_1'].mean():.3f}, SD: {df['d_vr_experience_1'].std():.3f}")
     print(f"Time Taken for Completion of Entire Experiment:"
           f"\n\tMean: {df['TIME_total'].mean():.3f}, SD: {df['TIME_total'].std():.3f}\n")
 
@@ -136,26 +121,26 @@ def ssq_analysis():
         ssq_joystick.append(df[col][df['condition'] == 'joystick'].tolist())
     walking_scores = calc_ssq_scores(ssq_walking)
     joystick_scores = calc_ssq_scores(ssq_joystick)
-    lists_stats(walking_scores, joystick_scores, "Simulator Sickness")
+    lists_stats_wrapper(walking_scores, joystick_scores, "Simulator Sickness")
     lists_boxplot(walking_scores, joystick_scores, "Simulator Sickness")
 
 def presence_analysis():
     joystick_scores = df["presence_overall_1"][df["condition"] == 'joystick'].tolist()
     walking_scores = df["presence_overall_1"][df["condition"] == 'walking'].tolist()
-    lists_stats(walking_scores, joystick_scores, "Presence")
+    lists_stats_wrapper(walking_scores, joystick_scores, "Presence")
     lists_boxplot(walking_scores, joystick_scores,
                   "Overall Presence")
 
 def task_performance():
     joystick_times = df["joystick_time_1"][df["condition"] == 'joystick'].tolist()
     walking_times = df["walking_time_1"][df["condition"] == 'walking'].tolist()
-    lists_stats(walking_times, joystick_times,
+    lists_stats_wrapper(walking_times, joystick_times,
                 "Time for Task Completion")
     lists_boxplot(walking_times, joystick_times,"Time Taken (in s)")
 
     joystick_scores = df["joystick_score_1"][df["condition"] == 'joystick'].tolist()
     walking_scores = df["walking_score_1"][df["condition"] == 'walking'].tolist()
-    lists_stats(walking_scores, joystick_scores,
+    lists_stats_wrapper(walking_scores, joystick_scores,
                 "Objects Correctly Placed")
     lists_histogram(walking_scores, joystick_scores,
                     [0, 1, 2, 3, 4, 5])
@@ -164,17 +149,17 @@ def task_feedback_analysis():
     ### It is in order Poorly to Clearly, 1 to 5.
     w_clarity = df["w_clarity_1"][df["condition"] == 'walking'].tolist()
     j_clarity = df["j_clarity_1"][df["condition"] == 'joystick'].tolist()
-    lists_stats(w_clarity, j_clarity, "Clarity of Instructions")
+    lists_stats_wrapper(w_clarity, j_clarity, "Clarity of Instructions")
 
     ### It is in order from difficult to easy, 1 to 5.
     w_difficulty = df["w_difficulty_1"][df["condition"] == 'walking'].tolist()
     j_difficulty = df["j_difficulty_1"][df["condition"] == 'joystick'].tolist()
-    lists_stats(w_difficulty, j_difficulty, "Difficulty of Task")
+    lists_stats_wrapper(w_difficulty, j_difficulty, "Difficulty of Task")
 
     ### It is in order from difficult/uncomfortable to easy/confortable, 1 to 4.
     w_navigation = df["w_navigation_1"][df["condition"] == 'walking'].tolist()
     j_navigation = df["j_navigation_1"][df["condition"] == 'joystick'].tolist()
-    lists_stats(w_navigation, j_navigation, "Ease of Navigation")
+    lists_stats_wrapper(w_navigation, j_navigation, "Ease of Navigation")
 
     ### Correlation between navigation and difficulty scores, for each condition:
 
@@ -184,6 +169,6 @@ def task_feedback_analysis():
     # print(w_strategy)
     # print(j_strategy)
 
-# preprocessing_data()
-# task_feedback_analysis()
+preprocessing_data()
+demographic_analysis()
 # print(df["w_clarity_1"][df["condition"] == "walking"])
