@@ -1,0 +1,44 @@
+version: 3.4.6
+server-time: 2024-11-11-15-24
+client-time: 2024-10-11-19-54
+user_agent: mozilla/5.0 (x11; linux x86_64; rv:131.0) gecko/20100101 firefox/131.0
+screen_width: 1280
+screen_height: 800
+html_width: 1280
+html_height: 2472
+user_time: 2024-10-11-19-54
+T: 0
+l: psy_group
+stime: 2024-11-11-15-24
+t: set
+a: 1
+l: d_age
+stime: 2024-11-11-15-24
+T: 5212
+t: textline
+a: 16
+l: d_age
+stime: 2024-11-11-15-24
+T: 5212
+t: textline
+a: 16
+l: d_gender
+stime: 2024-11-11-15-24
+T: 5212
+t: radio
+a: 1
+l: d_vr_experience
+stime: 2024-11-11-15-24
+T: 3430
+t: radio
+a: 1
+l: d_vis_impairment
+stime: 2024-11-11-15-24
+T: 1855
+t: check
+a: 
+a: 
+a: 
+a: 
+a: 
+a: 

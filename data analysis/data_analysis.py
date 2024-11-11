@@ -6,8 +6,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy import stats
 
-df = pd.read_csv("PsyToolkitData_BRED_PROJECT_5_Nov/data.csv")
+df = pd.read_csv("PsyToolkitData_BRED_PROJECT_11_Nov/data.csv")
 print(df.columns)
+
+df.loc[df["walking_time_1"].isna() & (df["psy_group"] == 1), "psy_group"] = 2
+df.loc[df["joystick_time_1"].isna() & (df["psy_group"] == 2), "psy_group"] = 1
+print(df["walking_time_1"][df["psy_group"] == 1])
 
 def convert_group(a):
     if a == 1:
@@ -180,6 +184,6 @@ def task_feedback_analysis():
     # print(w_strategy)
     # print(j_strategy)
 
-preprocessing_data()
-task_feedback_analysis()
+# preprocessing_data()
+# task_feedback_analysis()
 # print(df["w_clarity_1"][df["condition"] == "walking"])

@@ -47,7 +47,7 @@ q: DHave you been diagnosed with or have a history of any of the following condi
 
 l: decide_what_people_get
 t: jump
-- if $psy_group = 1 then goto walking_condition
+- if $psy_group = 1 then goto joystick_condition
 - if $psy_group = 2 then goto joystick_condition
 
 

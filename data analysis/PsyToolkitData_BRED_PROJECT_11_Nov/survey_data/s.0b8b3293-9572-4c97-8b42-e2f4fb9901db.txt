@@ -1,0 +1,44 @@
+version: 3.4.6
+server-time: 2024-11-05-18-01
+client-time: 2024-10-05-22-31
+user_agent: mozilla/5.0 (linux; android 10; k) applewebkit/537.36 (khtml, like gecko) chrome/130.0.0.0 mobile safari/537.36
+screen_width: 412
+screen_height: 919
+html_width: 412
+html_height: 3159
+user_time: 2024-10-05-22-31
+T: 0
+l: psy_group
+stime: 2024-11-05-18-01
+t: set
+a: 1
+l: d_age
+stime: 2024-11-05-18-01
+T: 6092
+t: textline
+a: 22
+l: d_age
+stime: 2024-11-05-18-01
+T: 6092
+t: textline
+a: 22
+l: d_gender
+stime: 2024-11-05-18-01
+T: 6092
+t: radio
+a: 4
+l: d_vr_experience
+stime: 2024-11-05-18-01
+T: 2411
+t: radio
+a: 5
+l: d_vis_impairment
+stime: 2024-11-05-18-01
+T: 3491
+t: check
+a: Epilepsy
+a: Astigmatism
+a: Myopia (Near-Sightedness)
+a: Hypermetropia (Far-Sightedness)
+a: Color-blindness
+a: 
