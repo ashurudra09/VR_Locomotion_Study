@@ -207,5 +207,25 @@ def reliability_analysis():
     cba_reliability("Simulator Sickness")
     cba_reliability("Presence")
 
+### TRYING TO FIGURE OUT HOW TO CALCULATE P-VALUE
 preprocessing_data()
-reliability_analysis()
+# ssq_analysis()
+
+
+v_question_columns = [col for col in df.columns if col.startswith('v_questions')]
+# Calculate the mean across 'v_questions' columns for each 'condition'
+ssq_walking, ssq_joystick = [], []
+for col in v_question_columns:
+    ssq_walking.append(df[col][df['condition'] == 'walking'].tolist())
+for col in v_question_columns:
+    ssq_joystick.append(df[col][df['condition'] == 'joystick'].tolist())
+walking_scores = calc_ssq_scores(ssq_walking)
+joystick_scores = calc_ssq_scores(ssq_joystick)
+
+_, pvalue = stats.shapiro(walking_scores)
+print(f"Normality of walking SSQ scores: {pvalue}")
+_, pvalue = stats.shapiro(joystick_scores)
+print(f"Normality of joystick SSQ scores: {pvalue}")
+
+_, pvalue = stats.mannwhitneyu(walking_scores, joystick_scores)
+print(f"PValue (ttest): {pvalue}")
